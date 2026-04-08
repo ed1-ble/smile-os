@@ -3,7 +3,8 @@
 #include "vga.h"
 
 void putc(char c){
-    print(&c);
+    char buf[2] = {c, '\0'};
+    print(buf);
 }
 
 void puts(const char* s){
@@ -68,13 +69,8 @@ void printf(const char* fmt, ...){
                         argp++;
                         break;
                     case 's':
-                        if (length == PRINTF_LENGTH_LONG || length == PRINTF_LENGTH_LONG_LONG){
-                            puts(*(const char **)argp);
-                            argp += 2;
-                        }else{
-                            puts(*(const char **)argp);
-                            argp++;
-                        }
+                        puts(*(const char **)argp);
+                        argp++;
                         break;
                     case '%':
                         putc('%');
