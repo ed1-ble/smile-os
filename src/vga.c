@@ -109,6 +109,14 @@ void print(const char*s) {
             case '\r':
                 terminal_column = 0;
                 break;
+            case '\b':
+                if (terminal_column == 0 && terminal_row != 0)
+                {
+                    terminal_row--;
+                    terminal_column = VGA_WIDTH;
+                }
+                terminal_buffer[terminal_row * VGA_WIDTH + (--terminal_column)] = ' ' | terminal_color;
+                break;
             default:
                 if (terminal_column == VGA_WIDTH)
                 {
@@ -132,6 +140,14 @@ void print_color(const char*s, enum vga_color fg_color) {
                 break;
             case '\r':
                 terminal_column = 0;
+                break;
+            case '\b':
+                if (terminal_column == 0 && terminal_row != 0)
+                {
+                    terminal_row--;
+                    terminal_column = VGA_WIDTH;
+                }
+                terminal_buffer[terminal_row * VGA_WIDTH + (--terminal_column)] = ' ' | terminal_color;
                 break;
             default:
                 if (terminal_column == VGA_WIDTH)
