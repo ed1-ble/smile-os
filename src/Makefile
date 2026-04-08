@@ -14,11 +14,16 @@ $(NAME).iso: ../isodir/boot/$(NAME)
 	cp $(NAME) ../isodir/boot/$(NAME)
 	mkdir -p ../isodir/boot
 
-$(NAME): kernel.o boot.o vga.o gdt.o gdts.o util.o idt.o idts.o stdio.o linker.ld
-	$(TARGET)-gcc -T linker.ld -o $(NAME) -ffreestanding -O2 -nostdlib kernel.o boot.o vga.o gdt.o gdts.o util.o idt.o idts.o stdio.o -lgcc
+$(NAME): kernel.o boot.o vga.o gdt.o gdts.o util.o idt.o idts.o timer.o stdio.o keyboard.o linker.ld
+	$(TARGET)-gcc -T linker.ld -o $(NAME) -ffreestanding -O2 -nostdlib kernel.o boot.o vga.o gdt.o gdts.o util.o idt.o idts.o timer.o stdio.o keyboard.o -lgcc
 
+
+keyboard.o: keyboard.c
+	$(TARGET)-gcc -c keyboard.c -o keyboard.o $(CFLAGS)
 stdio.o: stdio.c
 	$(TARGET)-gcc -c stdio.c -o stdio.o $(CFLAGS)
+timer.o: timer.c
+	$(TARGET)-gcc -c timer.c -o timer.o $(CLFAGS)
 idt.o: idt.c
 	$(TARGET)-gcc -c idt.c -o idt.o $(CFLAGS)
 util.o: util.c

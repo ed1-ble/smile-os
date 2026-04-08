@@ -1,7 +1,9 @@
 #include "vga.h"
 #include "gdt.h"
 #include "idt.h"
+#include "timer.h"
 #include "stdio.h"
+#include "keyboard.h"
 
 #if defined(__linux__)
 #error "You are not using a cross-compiler, dingus."
@@ -13,14 +15,22 @@
 
 void kernel_main(void)
 {
-    initGdt();
-    initIdt();
     reset_screen();
-    print("Smile OS 2.0\n");
-    print("Hello there\nYessir\n");
-    print_color("GDT success\n", VGA_COLOR_RED);
-    print_color("IDT success\n", VGA_COLOR_BLUE);
-    int n = 1;
-    char c = 'a';
-    printf("Number n: %d, Char c: %c",n,c);
+    print("BOOTING...\n\n");   
+
+    initGdt();
+    print_color("[OK] GDT INITIALIZED\n", VGA_COLOR_GREEN);
+    
+    initIdt();
+    print_color("[OK] IDT INITIALIZED\n", VGA_COLOR_GREEN);
+
+    initTimer();
+    print_color("[OK] TIMER INITIALIZED\n", VGA_COLOR_GREEN);
+
+    initKeyboard();
+    print_color("[OK] KEYBOARD INITIALIZED\n", VGA_COLOR_GREEN);
+
+    print_color("=== Smile OS 3.0 ===\n", VGA_COLOR_LIGHT_RED);
+
+    for (;;);
 }
