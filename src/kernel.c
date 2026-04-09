@@ -14,8 +14,6 @@
 #error "This tutorial needs to be compiled with a ix86-elf compiler!!"
 #endif
 
-#define BANNER " ____            _ _         ___  ____  \n/ ___| _ __ ___ (_) | ___   / _ \\/ ___| \n\\___ \\| '_ ` _ \\| | |/ _ \\ | | | \\___ \\ \n ___) | | | | | | | |  __/ | |_| |___) |\n|____/|_| |_| |_|_|_|\\___|  \\___/|____/ \n"
-
 void kernel_main(void)
 {
     reset_screen();
@@ -34,9 +32,9 @@ void kernel_main(void)
     print_color("[OK] KEYBOARD INITIALIZED\n", VGA_COLOR_GREEN);
 
     reset_screen();
-
-    print_color(BANNER, VGA_COLOR_LIGHT_RED);
     
+    print_info();
+
     print_prompt();
     for (;;);
 }

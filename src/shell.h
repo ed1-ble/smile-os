@@ -4,3 +4,4 @@
 void print_prompt();
 void handle_backspace(unsigned int *current_line_length);
 void handle_input(const char* input_buffer);
+void print_info();
