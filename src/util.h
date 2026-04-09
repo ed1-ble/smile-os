@@ -1,6 +1,7 @@
 void memset(void* dest, char val, uint32_t count);
 void outPortB(uint16_t port, uint8_t value);
 char inPortB(uint16_t port);
+int strcmp(const char* s1, const char* s2);
 
 struct InterruptRegisters
 {

@@ -1,4 +1,5 @@
 #include "vga.h"
+#include "util.h"
 
 static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) 
 {
@@ -17,6 +18,16 @@ size_t strlen(const char* str)
     return len;
 }
 
+void update_cursor(int x, int y)
+{
+    uint16_t pos = y * VGA_WIDTH + x;
+
+    outPortB(0x3D4, 0x0F);
+    outPortB(0x3D5, (uint8_t) (pos & 0xFF));
+    outPortB(0x3D4, 0x0E);
+    outPortB(0x3D5, (uint8_t) ((pos>>8) & 0xFF));
+}
+
 size_t terminal_row;
 size_t terminal_column;
 uint8_t terminal_color;
@@ -26,6 +37,7 @@ void reset_screen(void)
 {
     terminal_row = 0;
     terminal_column = 0;
+    update_cursor(terminal_column, terminal_row);
     terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 
     for (size_t y = 0; y < VGA_HEIGHT; y++) 
@@ -127,6 +139,8 @@ void print(const char*s) {
                 break;
         }
         s++;
+
+        update_cursor(terminal_column, terminal_row);
     }
 }
 
@@ -159,5 +173,7 @@ void print_color(const char*s, enum vga_color fg_color) {
                 break;
         }
         s++;
+
+        update_cursor(terminal_column, terminal_row);
     }
 }

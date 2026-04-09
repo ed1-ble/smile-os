@@ -25,3 +25,13 @@ char inPortB(uint16_t port)
     asm volatile("inb %1, %0": "=a"(rv):"dN"(port));
     return rv;
 }
+
+int strcmp(const char* s1, const char* s2)
+{
+    while (*s1 && (*s1 == *s2))
+    {
+        s1++;
+        s2++;
+    }
+    return *(unsigned char *)s1 - *(unsigned char *)s2;
+}

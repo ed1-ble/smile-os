@@ -3,6 +3,8 @@
 #include "idt.h"
 #include "stdio.h"
 #include "keyboard.h"
+#include "shell.h"
+#include "vga.h"
 
 const uint32_t UNKNOWN = 0xFFFFFFFF; // these r just constants that arent typically used
 const uint32_t ESC = 0xFFFFFFFF - 1;
@@ -66,6 +68,11 @@ UNKNOWN,UNKNOWN,UNKNOWN,UNKNOWN,UNKNOWN,UNKNOWN,UNKNOWN
 bool capsOn;
 bool capsLock;
 
+unsigned int current_line_length = PROMPT_LENGTH; // Simply for keeping track of backspace delete limit
+
+char input_buffer[256];
+unsigned int buffer_index = 0;
+
 void keyboardHandler(struct InterruptRegisters *regs)
 {
     char scanCode = inPortB(0x60) & 0x7F; // Code for key
@@ -88,6 +95,27 @@ void keyboardHandler(struct InterruptRegisters *regs)
         case 68:
         case 87:
         case 88:
+            break;
+        case 14:
+            // \b
+            if (press == 0)
+            {
+                handle_backspace(&current_line_length);
+                input_buffer[buffer_index] = 0;
+                buffer_index -= 1;
+            }
+            break;
+        case 28:
+            // \n
+            if (press == 0) 
+            {
+                input_buffer[buffer_index] = '\0';
+                handle_input(input_buffer);
+                memset(input_buffer, 0, sizeof(input_buffer));
+                buffer_index = 0;
+
+                current_line_length = PROMPT_LENGTH;
+            }
             break;
         case 42:
             // shift
@@ -115,10 +143,14 @@ void keyboardHandler(struct InterruptRegisters *regs)
                 if (capsOn || capsLock)
                 {
                     printf("%c",uppercase[scanCode]);
+                    input_buffer[buffer_index] = uppercase[scanCode];
                 } else
                 {
                     printf("%c",lowercase[scanCode]);
+                    input_buffer[buffer_index] = lowercase[scanCode];
                 }
+                buffer_index += 1;
+                current_line_length += 1;
             }
             break;
 
