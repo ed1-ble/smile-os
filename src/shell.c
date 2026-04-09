@@ -6,13 +6,15 @@
 typedef enum {
     CMD_UNKNOWN,
     CMD_ECHO,
-    CMD_CLEAR
+    CMD_CLEAR,
+    CMD_HELP
 } command_t;
 
 command_t parse_cmd(const char* cmd_buffer)
 {
     if (strcmp(cmd_buffer, "echo") == 0) return CMD_ECHO;
     if (strcmp(cmd_buffer, "clear") == 0) return CMD_CLEAR;
+    if (strcmp(cmd_buffer, "help") == 0) return CMD_HELP;
     return CMD_UNKNOWN;
 }
 
@@ -20,6 +22,14 @@ void echo(const char* input_buffer, unsigned int idx)
 {
     print("\n");
     print(&input_buffer[idx]);
+}
+
+void print_help_menu()
+{
+    print_color("\nAvailable commands:\n", VGA_COLOR_LIGHT_RED);
+    print("   help     - Display help menu\n");
+    print("   clear    - Clear the screen\n");
+    print("   echo     - Echo back a message\n");
 }
 
 void handle_backspace(unsigned int *current_line_length)
@@ -60,6 +70,9 @@ void handle_input(const char* input_buffer)
             break;
         case CMD_CLEAR:
             reset_screen();
+            break;
+        case CMD_HELP:
+            print_help_menu();
             break;
     }
     print_prompt();
