@@ -1,7 +1,7 @@
 # Smile OS
 
-## Description
 a simple 32-bit x86 hobby OS written in C.
+aesthetically mimics ULTRAKILL's (by Hakita) TERMINAL, but it's an older console version.
 
 ![Screenshot](./smile-os-ss.png)
 
