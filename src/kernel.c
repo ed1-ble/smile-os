@@ -33,7 +33,7 @@ void kernel_main(void)
 
     reset_screen();
     
-    print_info();
+    print_greeting();
 
     print_prompt();
     for (;;);

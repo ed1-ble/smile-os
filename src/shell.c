@@ -3,14 +3,19 @@
 #include "util.h"
 #include "stdio.h"
 
-#define BANNER " ____            _ _         ___  ____  \n/ ___| _ __ ___ (_) | ___   / _ \\/ ___| \n\\___ \\| '_ ` _ \\| | |/ _ \\ | | | \\___ \\ \n ___) | | | | | | | |  __/ | |_| |___) |\n|____/|_| |_| |_|_|_|\\___|  \\___/|____/ \n"
+#define BANNER \
+    " _____ _____ ____  __  __ ___ _   _    _    _     \n" \
+    "|_   _| ____|  _ \\|  \\/  |_ _| \\ | |  / \\  | |    \n" \
+    "  | | |  _| | |_) | |\\/| || ||  \\| | / _ \\ | |    \n" \
+    "  | | | |___|  _ <| |  | || || |\\  |/ ___ \\| |___ \n" \
+    "  |_| |_____|_| \\_\\_|  |_|___|_| \\_/_/   \\_\\_____|\n"
 
 typedef enum {
     CMD_UNKNOWN,
     CMD_ECHO,
     CMD_CLEAR,
     CMD_HELP,
-    CMD_FETCH,
+    CMD_GREET,
 } command_t;
 
 command_t parse_cmd(const char* cmd_buffer)
@@ -18,7 +23,7 @@ command_t parse_cmd(const char* cmd_buffer)
     if (strcmp(cmd_buffer, "echo") == 0) return CMD_ECHO;
     if (strcmp(cmd_buffer, "clear") == 0) return CMD_CLEAR;
     if (strcmp(cmd_buffer, "help") == 0) return CMD_HELP;
-    if (strcmp(cmd_buffer, "fetch") == 0) return CMD_FETCH;
+    if (strcmp(cmd_buffer, "greet") == 0) return CMD_GREET;
     return CMD_UNKNOWN;
 }
 
@@ -34,22 +39,15 @@ void print_help_menu()
     print("   help     - Display help menu\n");
     print("   clear    - Clear the screen\n");
     print("   echo     - Echo back a message\n");
-    print("   fetch    - Fetch system info\n");
+    print("   greet    - Print greeting\n");
 }
 
-void print_info()
+void print_greeting()
 {
     print("\n");
     print_color(BANNER, VGA_COLOR_LIGHT_RED);
     print("\n");
-    print("STATUS UPDATE\n\n");
-    print("MACHINE ID:     V1\n");
-    print("LOCATION:       HELL\n");
-    print("OBJECTIVE:      OBLITERATE\n\n");
-    print_color("MANKIND IS DEAD.\n", VGA_COLOR_RED);
-    print_color("BLOOD IS FUEL.\n",VGA_COLOR_RED);
-    print_color("HELL IS FULL.\n\n",VGA_COLOR_RED);
-    print_color("=== Welcome to Smile OS 3.0! ===\n",VGA_COLOR_LIGHT_RED);
+    print_color("=== Welcome to Smile OS 1.0! ===\n",VGA_COLOR_LIGHT_RED);
     print_color("Type \"help\" for available commands.\n", VGA_COLOR_LIGHT_BROWN);
     print("\n");
 }
@@ -96,8 +94,8 @@ void handle_input(const char* input_buffer)
         case CMD_HELP:
             print_help_menu();
             break;
-        case CMD_FETCH:
-            print_info();
+        case CMD_GREET:
+            print_greeting();
             break;
     }
     print_prompt();
