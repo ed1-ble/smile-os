@@ -3,7 +3,7 @@
 ## Description
 a simple 32-bit x86 hobby OS written in C.
 
-[Screenshot](./smile-os-ss.png)
+![Screenshot](./smile-os-ss.png)
 
 ## Features
 1. Working shell with commands (currently 4)
